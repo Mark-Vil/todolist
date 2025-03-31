@@ -37,7 +37,7 @@ function App() {
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   });
-  
+
   const [newTodoDueTime, setNewTodoDueTime] = useState('');
 
 
@@ -183,7 +183,7 @@ function App() {
         
         <div className="mb-8 p-4 bg-white rounded-lg shadow-md max-w-md mx-auto">
   <h2 className="text-xl font-semibold text-gray-800 mb-4">Add New Todo</h2>
-  <div className="border-4 border-indigo-500 rounded-lg p-2">
+  <div className="rounded-lg p-2">
     <form onSubmit={addTodo} className="flex flex-col space-y-3">
       <input
         type="text"
