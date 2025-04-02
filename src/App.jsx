@@ -30,13 +30,7 @@ function App() {
     fetchTodos();
   }, []);
   
-  const [newTodoDueDate, setNewTodoDueDate] = useState(() => {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  });
+  const [newTodoDueDate, setNewTodoDueDate] = useState('');
 
   const [newTodoDueTime, setNewTodoDueTime] = useState('');
 
@@ -46,27 +40,19 @@ function App() {
     
     if (!newTodoTitle.trim()) return;
     
-
-    let dueDate;
-    
-    if (newTodoDueDate) {
-      if (newTodoDueTime) {
-   
-        dueDate = `${newTodoDueDate}T${newTodoDueTime}:00`;
-      } else {
- 
-        dueDate = `${newTodoDueDate}T00:00:00`;
-      }
-    } else {
-      dueDate = new Date().toISOString();
-    }
-    
     const newTodo = {
       title: newTodoTitle,
       completed: false,
-      dueDate: dueDate,
       createdAt: new Date().toISOString()
     };
+  
+    if (newTodoDueDate) {
+      if (newTodoDueTime) {
+        newTodo.dueDate = `${newTodoDueDate}T${newTodoDueTime}:00`;
+      } else {
+        newTodo.dueDate = `${newTodoDueDate}T00:00:00`;
+      }
+    }
     
     try {
       const response = await fetch(API_URL, {
@@ -193,21 +179,25 @@ function App() {
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-400 transition-colors"
         autoFocus
       />
-      <div className="flex items-center">
-        <label className="text-sm text-gray-600 mr-2">Due Date:</label>
-        <input
-          type="date"
-          value={newTodoDueDate}
-          onChange={(e) => setNewTodoDueDate(e.target.value)}
-          className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-       <input
-  type="time"
-  value={newTodoDueTime}
-  onChange={(e) => setNewTodoDueTime(e.target.value)}
-  className="ml-2 px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-/>
-      </div>
+      <div className="flex justify-center">
+  <div className="flex flex-wrap items-center justify-center gap-2 max-w-full">
+    <label className="text-sm text-gray-600">Due:</label>
+    <div className="flex gap-2 justify-center max-w-full">
+      <input
+        type="date"
+        value={newTodoDueDate}
+        onChange={(e) => setNewTodoDueDate(e.target.value)}
+        className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-[140px] xs:w-[160px] truncate text-sm"
+      />
+      <input
+        type="time"
+        value={newTodoDueTime}
+        onChange={(e) => setNewTodoDueTime(e.target.value)}
+        className="px-2 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-[100px] xs:w-[120px] truncate text-sm"
+      />
+    </div>
+  </div>
+</div>
       <button
         type="submit"
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
