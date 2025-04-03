@@ -43,16 +43,13 @@ function App() {
     const newTodo = {
       title: newTodoTitle,
       completed: false,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      dueDate: newTodoDueDate
+        ? newTodoDueTime
+          ? `${newTodoDueDate}T${newTodoDueTime}:00`
+          : `${newTodoDueDate}T00:00:00`
+        : undefined,
     };
-  
-    if (newTodoDueDate) {
-      if (newTodoDueTime) {
-        newTodo.dueDate = `${newTodoDueDate}T${newTodoDueTime}:00`;
-      } else {
-        newTodo.dueDate = `${newTodoDueDate}T00:00:00`;
-      }
-    }
     
     try {
       const response = await fetch(API_URL, {
@@ -60,21 +57,24 @@ function App() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newTodo)
+        body: JSON.stringify(newTodo),
       });
-      
+  
       if (!response.ok) {
         throw new Error('Failed to add todo');
       }
       
       const addedTodo = await response.json();
-      setTodos([...todos, addedTodo]);
+      setTodos((prevTodos) => [...prevTodos, addedTodo]);
       setNewTodoTitle('');
-      
+      setNewTodoDueDate('');
+      setNewTodoDueTime('');
+  
     } catch (err) {
       setError(err.message);
     }
   };
+  
   
   
 

@@ -140,7 +140,7 @@ const TodoItem = ({ todo, onToggleComplete, onDeleteTodo, onEditTodo }) => {
       </div>
       
       {!isEditing && (
-        <div className="flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex space-x-2 transition-opacity">
           <button
             onClick={() => setIsEditing(true)}
             className="text-gray-400 hover:text-blue-500"
